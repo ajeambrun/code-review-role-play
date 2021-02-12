@@ -2,23 +2,42 @@ package movierental;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that manage customer rentals
+ */
 public class Customer {
 
-    private String _name;
-    private List<Rental> _rentals = new ArrayList<Rental>();
+    private String _name; //The name of the customer
+    private List<Rental> _rentals = new ArrayList<>(); //List of rentals
 
+    /**
+     * Contructor of customer
+     * @param name
+     */
     public Customer(String name) {
         _name = name;
     }
 
+    /**
+     * Add a rental
+     * @param arg
+     */
     public void addRental(Rental arg) {
         _rentals.add(arg);
     }
 
+    /**
+     * get the customer name
+     * @return
+     */
     public String getName() {
-        return _name;
+        return _name; // return the name
     }
 
+    /**
+     * build the statement for the customer
+     * @return
+     */
     public String statement() {
         double totalAmount = 0;
         int frequentRenterPoints = 0;
