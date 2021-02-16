@@ -4,27 +4,27 @@ import java.util.List;
 
 public class Customer {
 
-    private String _name;
-    private List<Rental> _rentals = new ArrayList<Rental>();
+    private String nameOfCustomer;
+    private List<Rental> customerRentals = new ArrayList<Rental>();
 
     public Customer(String name) {
-        _name = name;
+        nameOfCustomer = name;
     }
 
     public void addRental(Rental arg) {
-        _rentals.add(arg);
+        customerRentals.add(arg);
     }
 
     public String getName() {
-        return _name;
+        return nameOfCustomer;
     }
 
-    public String statement() {
+    public String generateCustomerStatementString() {
         double totalAmount = 0;
         int frequentRenterPoints = 0;
         String result = "Rental Record for " + getName() + "\n";
 
-        for (Rental each: _rentals) {
+        for (Rental each: customerRentals) {
             double thisAmount = 0;
 
             //determine amounts for each line
