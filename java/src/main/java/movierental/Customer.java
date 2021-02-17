@@ -1,64 +1,103 @@
 package movierental;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
+
+class Statement {
+    String statement;
+    double amount;
+    int frequentRenterPoints;
+
+    public Statement(String statement, double amount, int frequentRenterPoints) {
+        this.statement = statement;
+        this.amount = amount;
+        this.frequentRenterPoints = frequentRenterPoints;
+    }
+
+    public void appendStatement(String statement) {
+        this.statement += statement;
+    }
+
+    public void addAmount(double amount) {
+        this.amount += amount;
+    }
+
+    public String getStatement() {
+        return statement;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public int getFrequentRenterPoints() {
+        return frequentRenterPoints;
+    }
+
+    public void incrementRenterPoints() {
+        frequentRenterPoints++;
+    }
+}
 public class Customer {
 
     private String nameOfCustomer;
-    private List<Rental> customerRentals = new ArrayList<Rental>();
+    private List<Rental> customerRentals = new ArrayList<>();
 
-    public Customer(String name) {
-        nameOfCustomer = name;
+    public Customer(String nameOfCustomer) {
+        this.nameOfCustomer = nameOfCustomer;
     }
 
-    public void addRental(Rental arg) {
-        customerRentals.add(arg);
+    public void addRental(Rental rental) {
+        customerRentals.add(rental);
     }
 
-    public String getName() {
+    public String getNameOfCustomer() {
         return nameOfCustomer;
     }
 
     public String generateCustomerStatementString() {
-        double totalAmount = 0;
-        int frequentRenterPoints = 0;
-        String result = "Rental Record for " + getName() + "\n";
 
-        for (Rental each: customerRentals) {
-            double thisAmount = 0;
+        Statement statement = new Statement("Rental Record for " + getNameOfCustomer() + "\n", 0, 0);
 
-            //determine amounts for each line
-            switch (each.getMovie().getPriceCode()) {
-                case Movie.REGULAR:
-                    thisAmount += 2;
-                    if (each.getDaysRented() > 2)
-                        thisAmount += (each.getDaysRented() - 2) * 1.5;
-                    break;
-                case Movie.NEW_RELEASE:
-                    thisAmount += each.getDaysRented() * 3;
-                    break;
-                case Movie.CHILDRENS:
-                    thisAmount += 1.5;
-                    if (each.getDaysRented() > 3)
-                        thisAmount += (each.getDaysRented() - 3) * 1.5;
-                    break;
+        Consumer<Rental> updateOfCurrentStatement = (Rental rental) -> rentalBiFunction.apply(statement, rental);
+        customerRentals.forEach(updateOfCurrentStatement);
+
+        statement.appendStatement("Amount owed is " + statement.getAmount() + "\n");
+        statement.appendStatement("You earned " + statement.getFrequentRenterPoints() + " frequent renter points");
+
+        return statement.getStatement();
+    }
+
+    private final BiFunction<Statement, Rental, Statement> rentalBiFunction = (statement, rental) -> {
+        updateStatement(statement, rental);
+        return statement;
+    };
+
+    private void updateStatement(Statement statement, Rental rental) {
+        double thisAmount = 0;
+
+        switch (rental.getMovie().getPriceCode()) {
+            case Movie.REGULAR -> {
+                thisAmount += 2;
+                if (rental.getDaysRented() > 2)
+                    thisAmount += (rental.getDaysRented() - 2) * 1.5;
             }
-
-            // add frequent renter points
-            frequentRenterPoints++;
-            // add bonus for a two day new release rental
-            if ((each.getMovie().getPriceCode() == Movie.NEW_RELEASE) && each.getDaysRented() > 1)
-                frequentRenterPoints++;
-
-            // show figures for this rental
-            result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(thisAmount) + "\n";
-            totalAmount += thisAmount;
+            case Movie.NEW_RELEASE -> thisAmount += rental.getDaysRented() * 3;
+            case Movie.CHILDRENS -> {
+                thisAmount += 1.5;
+                if (rental.getDaysRented() > 3)
+                    thisAmount += (rental.getDaysRented() - 3) * 1.5;
+            }
         }
 
-        // add footer lines
-        result += "Amount owed is " + String.valueOf(totalAmount) + "\n";
-        result += "You earned " + String.valueOf(frequentRenterPoints) + " frequent renter points";
+        statement.incrementRenterPoints();
+        if ((rental.getMovie().getPriceCode() == Movie.NEW_RELEASE) && rental.getDaysRented() > 1)
+            statement.incrementRenterPoints();
 
-        return result;
+        statement.appendStatement( "\t" + rental.getMovie().getTitle() + "\t" + thisAmount + "\n");
+        statement.addAmount(thisAmount);
     }
 }

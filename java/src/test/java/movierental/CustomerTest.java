@@ -24,7 +24,7 @@ public class CustomerTest {
     @Test
     public void testGetName() {
         Customer c = new Customer("David");
-        assertEquals("David", c.getName());
+        assertEquals("David", c.getNameOfCustomer());
     }
 
     @Test
