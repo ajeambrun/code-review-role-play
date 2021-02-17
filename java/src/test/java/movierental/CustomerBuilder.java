@@ -14,7 +14,7 @@ public class CustomerBuilder {
     public Customer build() {
         Customer result = new Customer(name);
         for (Rental rental : rentals) {
-            result.addRental(rental);
+            result.addRentalToCustomerRentalList(rental);
         }
         return result;
     }

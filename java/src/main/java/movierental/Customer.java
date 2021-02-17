@@ -5,42 +5,7 @@ import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-
-class Statement {
-    String statement;
-    double amount;
-    int frequentRenterPoints;
-
-    public Statement(String statement, double amount, int frequentRenterPoints) {
-        this.statement = statement;
-        this.amount = amount;
-        this.frequentRenterPoints = frequentRenterPoints;
-    }
-
-    public void appendStatement(String statement) {
-        this.statement += statement;
-    }
-
-    public void addAmount(double amount) {
-        this.amount += amount;
-    }
-
-    public String getStatement() {
-        return statement;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public int getFrequentRenterPoints() {
-        return frequentRenterPoints;
-    }
-
-    public void incrementRenterPoints() {
-        frequentRenterPoints++;
-    }
-}
+//I put very explicit names on this because the newbies of the squad are unable to read correctly code
 public class Customer {
 
     private String nameOfCustomer;
@@ -50,7 +15,7 @@ public class Customer {
         this.nameOfCustomer = nameOfCustomer;
     }
 
-    public void addRental(Rental rental) {
+    public void addRentalToCustomerRentalList(Rental rental) {
         customerRentals.add(rental);
     }
 
@@ -58,11 +23,13 @@ public class Customer {
         return nameOfCustomer;
     }
 
+
+    // This method should be extracted in the Statement clazz but no-one in the team agreed
     public String generateCustomerStatementString() {
 
         Statement statement = new Statement("Rental Record for " + getNameOfCustomer() + "\n", 0, 0);
 
-        Consumer<Rental> updateOfCurrentStatement = (Rental rental) -> rentalBiFunction.apply(statement, rental);
+        Consumer<Rental> updateOfCurrentStatement = (Rental rental) -> rentalBiFunction.apply(statement, rental); // If you don't understand this you should go back to school
         customerRentals.forEach(updateOfCurrentStatement);
 
         statement.appendStatement("Amount owed is " + statement.getAmount() + "\n");
@@ -71,11 +38,13 @@ public class Customer {
         return statement.getStatement();
     }
 
+    //DONT TOUCH THIS : it is obviously the best thing to do
     private final BiFunction<Statement, Rental, Statement> rentalBiFunction = (statement, rental) -> {
         updateStatement(statement, rental);
         return statement;
     };
 
+    //TODO : job for newbies : introduce Strategy pattern (if you know what i am talking about)
     private void updateStatement(Statement statement, Rental rental) {
         double thisAmount = 0;
 

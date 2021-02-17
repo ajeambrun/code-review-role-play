@@ -18,7 +18,7 @@ public class CustomerTest {
         Customer customer2 = new CustomerBuilder().withName("Julia").build();
         Movie movie1 = new Movie("Gone with the Wind", Movie.REGULAR);
         Rental rental1 = new Rental(movie1, 3); // 3 day rental
-        customer2.addRental(rental1);
+        customer2.addRentalToCustomerRentalList(rental1);
     }
 
     @Test
