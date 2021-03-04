@@ -1,5 +1,7 @@
 package movierental;
 
+import java.util.Objects;
+
 class Statement {
     private final String statement;
 
@@ -17,5 +19,18 @@ class Statement {
 
     public static Statement empty() {
         return new Statement("");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Statement statement1 = (Statement) o;
+        return statement.equals(statement1.statement);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(statement);
     }
 }

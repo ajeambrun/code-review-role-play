@@ -1,29 +1,27 @@
 package movierental;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Customer {
 
     private final Name name;
     private final Rentals rentals = new Rentals();
 
-    public Customer(String name) {
-        this.name = new Name(name);
+    public Customer(Name name) {
+        this.name = name;
     }
 
     public void addRental(Rental arg) {
         rentals.add(arg);
     }
 
-    public String getName() {
-        return name.getName();
+    public Name getName() {
+        return name;
     }
 
-    public String statement() {
+    public Statement statement() {
         Amount totalAmount = Amount.zero();
         FrequentRenterPoints frequentRenterPoints = FrequentRenterPoints.zero();
         Statement result = Statement.empty();
-        result = result.append("Rental Record for " + getName() + "\n");
+        result = result.append("Rental Record for " + name.getName() + "\n");
 
         for (Rental each: rentals.all()) {
             Amount thisAmount = Amount.zero();
@@ -65,6 +63,6 @@ public class Customer {
         result = result.append("Amount owed is " + totalAmount + "\n");
         result = result.append("You earned " + frequentRenterPoints + " frequent renter points");
 
-        return result.toString();
+        return result;
     }
 }

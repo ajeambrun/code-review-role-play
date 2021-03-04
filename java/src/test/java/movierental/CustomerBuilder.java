@@ -9,10 +9,10 @@ public class CustomerBuilder {
     public static final String NAME = "Roberts";
 
     private String name = NAME;
-    private List<Rental> rentals = new ArrayList<Rental>();
+    private List<Rental> rentals = new ArrayList<>();
 
     public Customer build() {
-        Customer result = new Customer(name);
+        Customer result = new Customer(new Name(name));
         for (Rental rental : rentals) {
             result.addRental(rental);
         }

@@ -23,8 +23,8 @@ public class CustomerTest {
 
     @Test
     public void testGetName() {
-        Customer c = new Customer("David");
-        assertEquals("David", c.getName());
+        Customer c = new Customer(new Name("David"));
+        assertEquals(new Name("David"), c.getName());
     }
 
     @Test
@@ -40,8 +40,8 @@ public class CustomerTest {
                 "\tGone with the Wind\t3.5\n" +
                 "Amount owed is 3.5\n" +
                 "You earned 1 frequent renter points";
-        String statement = customer2.statement();
-        assertEquals(expected, statement);
+        Statement statement = customer2.statement();
+        assertEquals(Statement.empty().append(expected), statement);
     }
 
     @Test
@@ -57,8 +57,8 @@ public class CustomerTest {
                 "\tStar Wars\t9.0\n" +
                 "Amount owed is 9.0\n" +
                 "You earned 2 frequent renter points";
-        String statement = customer2.statement();
-        assertEquals(expected, statement);
+        Statement statement = customer2.statement();
+        assertEquals(Statement.empty().append(expected), statement);
     }
 
     @Test
@@ -74,8 +74,8 @@ public class CustomerTest {
                 "\tMadagascar\t1.5\n" +
                 "Amount owed is 1.5\n" +
                 "You earned 1 frequent renter points";
-        String statement = customer2.statement();
-        assertEquals(expected, statement);
+        Statement statement = customer2.statement();
+        assertEquals(Statement.empty().append(expected), statement);
     }
 
     @Test
@@ -97,8 +97,8 @@ public class CustomerTest {
                 "\tGone with the Wind\t11.0\n" +
                 "Amount owed is 23.0\n" +
                 "You earned 4 frequent renter points";
-        String statement = customer1.statement();
-        assertEquals(expected, statement);
+        Statement statement = customer1.statement();
+        assertEquals(Statement.empty().append(expected), statement);
     }
 
     //TODO make test for price breaks in code.
